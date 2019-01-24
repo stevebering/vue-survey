@@ -14,7 +14,18 @@
 import { Component, Vue } from "vue-property-decorator";
 import * as SurveyVue from "survey-vue";
 let Survey = SurveyVue.Survey;
-SurveyVue.StylesManager.applyTheme("default");
+// let defaultThemeColors = SurveyVue.StylesManager.ThemeColors["default"];
+// defaultThemeColors["$main-color"] = "#7ff07f";
+// defaultThemeColors["$main-hover-color"] = "#6fe06f";
+// defaultThemeColors["$text-color"] = "#4a4a4a";
+// defaultThemeColors["$header-color"] = "#7ff07f";
+// defaultThemeColors["$header-background-color"] = "#4a4a4a";
+// defaultThemeColors["$body-container-background-color"] = "#f8f8f8";
+
+// SurveyVue.StylesManager.applyTheme("default");
+
+// SurveyVue.defaultBootstrapCss.navigationButton = "btn btn-primary";
+SurveyVue.StylesManager.applyTheme("bootstrap");
 
 var surveyJSON = {
   title: "Tell us, what technologies do you use?",
@@ -40,17 +51,24 @@ var surveyJSON = {
         },
         {
           type: "checkbox",
-          choices: ["Bootstrap", "Foundation", "Skeleton"],
+          choices: [
+            { value: "bootstrap", text: "Bootstrap" },
+            { value: "foundation", text: "Foundation" },
+            { value: "skeleton", text: "Skeleton" }
+          ],
           hasOther: true,
           isRequired: true,
-          defaultValue: ["Bootstrap"],
+          defaultValue: ["bootstrap"],
           name: "framework",
           title: "What front-end framework do you use?",
           visibleIf: "{cssFrameworkUsing} = 'yes'"
         },
         {
           type: "checkbox",
-          choices: ["SASS", "LESS"],
+          choices: [
+            { value: "sass", text: "SASS" },
+            { value: "less", text: "LESS" }
+          ],
           hasOther: true,
           isRequired: true,
           name: "compiler",
@@ -107,6 +125,11 @@ export default class Home extends Vue {
     model.showCompletedPage = false;
     model.clearInvisibleValues = "onHidden";
     model.onComplete.add(this.onSurveyComplete);
+    model.onValueChanged.add((survey, options) => {
+      console.log("survey", survey);
+      console.log("options", options);
+      survey.title = `page ${survey.currentPageNo + 1} or ${survey.visiblePageCount}`;
+    });
     this.survey = model;
   }
 

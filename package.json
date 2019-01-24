@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "bootstrap": "4.2.1",
     "survey-vue": "1.0.65",
     "vue": "^2.5.21",
     "vue-class-component": "^6.0.0",
