@@ -43,6 +43,7 @@ var surveyJSON = {
           choices: ["Bootstrap", "Foundation", "Skeleton"],
           hasOther: true,
           isRequired: true,
+          defaultValue: ["Bootstrap"],
           name: "framework",
           title: "What front-end framework do you use?",
           visibleIf: "{cssFrameworkUsing} = 'yes'"
@@ -103,12 +104,16 @@ export default class Home extends Vue {
   private surveyResult?: any = null;
   mounted() {
     let model = new SurveyVue.Model(surveyJSON);
+    model.showCompletedPage = false;
+    model.clearInvisibleValues = "onHidden";
     model.onComplete.add(this.onSurveyComplete);
     this.survey = model;
   }
 
-  private onSurveyComplete(result: any) {
+  private onSurveyComplete(result: any, options: any) {
+    options.showDataSaving("Doing some saving now");
     this.surveyResult = result.data;
+    setTimeout(() => options.showDataSavingSuccess("We did it!"), 2000);
   }
 }
 </script>
